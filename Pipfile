@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+
+requests = "*"
+vcrpy = "*"
+pandas = "*"
+coveralls = "*"
+"u-msgpack-python" = "*"
+nose = "*"
+pyxylookup = {git = "https://github.com/iobis/pyxylookup.git"}
+tox = "*"
+
+
+[dev-packages]
+
+[requires]
+python_version = "3.6"
