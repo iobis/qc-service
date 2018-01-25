@@ -13,12 +13,3 @@ def get_centroid(points):
     hyp = sqrt(avg_x * avg_x + avg_y * avg_y)
     center_lat = atan2(avg_z, hyp)
     (degrees(center_lon), degrees(center_lat))
-
-if __name__ == '__main__':
-    import random
-    random.seed(42)
-    xy = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(1000000)]
-    print(get_centroid(xy))
-    import cProfile
-    cProfile.runctx('get_centroid(xy)', globals(), locals())
-    cProfile.runctx('get_centroid_fast(xy)', globals(), locals())
