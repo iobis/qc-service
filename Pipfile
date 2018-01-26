@@ -13,6 +13,7 @@ coveralls = "*"
 nose = "*"
 pyxylookup = {git = "https://github.com/iobis/pyxylookup.git"}
 tox = "*"
+geopy = "*"
 
 
 [dev-packages]

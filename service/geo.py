@@ -19,8 +19,9 @@ def get_centroid(points):
 
 
 def gc_distance_points(a, points):
+    b = np.asarray(points)
     lat1, lng1 = radians(a[1]), radians(a[0])
-    lat2, lng2 = np.radians(points[:, 1]), np.radians(points[:, 0])
+    lat2, lng2 = np.radians(b[:, 1]), np.radians(b[:, 0])
 
     sin_lat1, cos_lat1 = sin(lat1), cos(lat1)
     sin_lat2, cos_lat2 = np.sin(lat2), np.cos(lat2)
