@@ -13,3 +13,18 @@ def get_centroid(points):
     hyp = sqrt(avg_x * avg_x + avg_y * avg_y)
     center_lat = atan2(avg_z, hyp)
     (degrees(center_lon), degrees(center_lat))
+
+# def get_distance_stats(position_ids, positions):
+#     def safe_distance(A, B):
+#         try:
+#             if A == B: return 0.0
+#             else: return gc_distance(A,B)
+#         except:
+#             print("Distance A:%s to B:%s failed" % (A,B))
+#             raise
+#
+#     points = [Point(positions[id]) for id in position_ids if positions.has_key(id)]
+#     centroid = get_centroid(points)
+#     distances = [safe_distance(centroid, p) * radius for p in points]
+#     del points
+#     return (centroid.to_ewkt(),) + get_values_stats(distances)
