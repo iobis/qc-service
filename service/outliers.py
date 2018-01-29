@@ -1,4 +1,5 @@
 import pyxylookup as xy
+import numpy as np
 from service import stats
 from service import geo
 
@@ -7,6 +8,7 @@ IQR_COEF = 3
 
 
 def environmental(points, mad_coef, iqr_coef, qcstats=None):
+    points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
     if mad_coef is None:
         mad_coef = MAD_COEF
     if iqr_coef is None:
@@ -15,18 +17,20 @@ def environmental(points, mad_coef, iqr_coef, qcstats=None):
     qc = {}
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         values = env[grid]
+        # TODO handle None values / NaN when not found (e.g. when on land)
         if qcstats is None:
             median, mad, q1, q3 = stats.get_values_stats(values)
         else:
             median, mad, q1, q3 = qcstats[grid]
         ok_mad = (median - median + (mad * mad_coef)) < values < (median + (mad * mad_coef))
         ok_iqr = (q1 - ((q3 - q1) * iqr_coef)) < values < (q3 + ((q3 - q1) * iqr_coef))
-        qc[grid] = {'ok_mad': ok_mad, 'ok_iqr': ok_iqr,
+        qc[grid] = {'ok_mad': ok_mad[duplicate_indices], 'ok_iqr': ok_iqr[duplicate_indices],
                     'median': median, 'mad': mad, 'q1': q1, 'q3': q3}
     return qc
 
 
 def spatial(points, mad_coef, iqr_coef, qcstats=None):
+    points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
     if mad_coef is None:
         mad_coef = MAD_COEF
     if iqr_coef is None:
@@ -42,7 +46,7 @@ def spatial(points, mad_coef, iqr_coef, qcstats=None):
     ok_mad = distances < median + (mad * mad_coef)
     ok_iqr = distances < q3 + ((q3-q1) * iqr_coef)
 
-    return {'ok_mad': ok_mad, 'ok_iqr': ok_iqr,
+    return {'ok_mad': ok_mad[duplicate_indices], 'ok_iqr': ok_iqr[duplicate_indices],
             'centroid': geo.point_ewkt(centroid), 'median': median, 'mad': mad, 'q1': q1, 'q3': q3}
 
 

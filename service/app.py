@@ -95,6 +95,7 @@ class QcSpeciesResource(QcResource):
         try:
             qcstats = None
             if aphiaid is not None:
+                # TODO what should be done when there are no qcstats for the aphiaid provided (e.g. when not enough points/on land)
                 qcstats = taxoninfo.qc_stats(aphiaid)
             qc = outliers.environmental(points, mad_coef, iqr_coef, qcstats)
             qc['spatial'] = outliers.spatial(points, mad_coef, iqr_coef, qcstats)

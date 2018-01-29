@@ -22,15 +22,16 @@ interactions:
       Access-Control-Allow-Methods: ['POST, GET, OPTIONS, DELETE']
       Access-Control-Allow-Origin: ['*']
       Access-Control-Max-Age: ['3600']
-      Age: ['0']
+      Age: ['9472']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
+      Content-Length: ['262']
       Content-Type: [application/json;charset=UTF-8]
-      Date: ['Mon, 29 Jan 2018 16:28:09 GMT']
+      Date: ['Mon, 29 Jan 2018 19:06:02 GMT']
       Server: [nginx/1.10.3 (Ubuntu)]
       Vary: [Accept-Encoding]
       Via: [1.1 varnish-v4]
-      X-Varnish: ['6611663']
+      X-Varnish: [3460397 6611664]
     status: {code: 200, message: OK}
 - request:
     body: null
@@ -53,14 +54,79 @@ interactions:
       Access-Control-Allow-Methods: ['POST, GET, OPTIONS, DELETE']
       Access-Control-Allow-Origin: ['*']
       Access-Control-Max-Age: ['3600']
+      Age: ['9472']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Length: ['125']
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Mon, 29 Jan 2018 19:06:02 GMT']
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Vary: [Accept-Encoding]
+      Via: [1.1 varnish-v4]
+      X-Varnish: [6444175 3402649]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://api.iobis.org/taxon?aphiaid=145552
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA3VQy07DMBD8lWhPIPmQtHWBfAAnJJB6RKhaOZvEwo/Ia4Oqqv/OOuLRC7edmfXM
+        rM9gYgkZ+k5BHEcmGVsFznor06ZtK0DOC04EfU6FFCTi4jJD/3oGO0Cv23273yn4QGeH4zWzYKKQ
+        fyl9L48xvB8DenGDw0LGEoOC/MNgmpC5+AaNDZhs8VXFkueYRL95siEgFb5tDpTNTM6ppnvYbmXr
+        MybPa1a301pvalET0yBFuzsFA2aU8wRpKTafnFj38GzmFAVlFAdZppryWAy6tdeI3rrTXzE0hCT8
+        RKHwdV/h+Pua/64w8o9VfZmRauRqdXm7fAFv/NDLgwEAAA==
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Headers: [x-requested-with]
+      Access-Control-Allow-Methods: ['POST, GET, OPTIONS, DELETE']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['3600']
       Age: ['0']
       Connection: [keep-alive]
       Content-Encoding: [gzip]
       Content-Type: [application/json;charset=UTF-8]
-      Date: ['Mon, 29 Jan 2018 16:28:09 GMT']
+      Date: ['Mon, 29 Jan 2018 19:06:02 GMT']
       Server: [nginx/1.10.3 (Ubuntu)]
       Vary: [Accept-Encoding]
       Via: [1.1 varnish-v4]
-      X-Varnish: ['3402648']
+      X-Varnish: ['3460399']
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      User-Agent: [python-requests/2.18.4]
+    method: GET
+    uri: http://api.iobis.org/taxon/506064/qc
+  response:
+    body:
+      string: !!binary |
+        H4sIAAAAAAAAA02O0Q6CMAxF/2XP0LTr1m78jCGO6BIEE8aT8d/dDBLf2ntP7+3L5GQGj4LiOnNd
+        96WYgeqYpme5Xx5TyuNiht4y+FMc64klwM5s23Yy7CHqITUCwdm2lpOwHjwdUiMIuGbmP0ICeecI
+        QlB2P+9bx1EQBYKGljqPJZc9TfX1CKjC6IS5ps3rcjucnhQUo0UlpfcHdrW6HOkAAAA=
+    headers:
+      Accept-Ranges: [bytes]
+      Access-Control-Allow-Headers: [x-requested-with]
+      Access-Control-Allow-Methods: ['POST, GET, OPTIONS, DELETE']
+      Access-Control-Allow-Origin: ['*']
+      Access-Control-Max-Age: ['3600']
+      Age: ['0']
+      Connection: [keep-alive]
+      Content-Encoding: [gzip]
+      Content-Type: [application/json;charset=UTF-8]
+      Date: ['Mon, 29 Jan 2018 19:06:02 GMT']
+      Server: [nginx/1.10.3 (Ubuntu)]
+      Vary: [Accept-Encoding]
+      Via: [1.1 varnish-v4]
+      X-Varnish: ['6444177']
     status: {code: 200, message: OK}
 version: 1

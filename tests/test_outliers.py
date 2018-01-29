@@ -1,6 +1,7 @@
 import random
 from service import outliers
 
+
 def test_spatial():
     """outliers - spatial"""
     random.seed(42)
@@ -13,16 +14,18 @@ def test_spatial():
     assert 6000 > qc['mad'] > 1500
     assert 12000 > qc['q1'] > 2000
     assert 24000 > qc['q3'] > 6000
-    xy = [(0, 0) for _ in range(100)]
+    xy = [(random.uniform(-0.001, 0.001), random.uniform(-0.001, 0.001)) for _ in range(100)]
     qc = outliers.spatial(xy, None, None)
     assert len(qc['ok_mad']) == len(xy)
     assert len(qc['ok_iqr']) == len(xy)
-    assert qc['centroid'] == "SRID=4326;POINT(0.0 0.0)"
-    assert qc['median'] == 0
-    assert qc['mad'] == 0
-    assert qc['q1'] == 0
-    assert qc['q3'] == 0
+    assert qc['centroid'].startswith('SRID=4326;POINT(')
+    assert round(qc['median']) == 0
+    assert round(qc['mad']) == 0
+    assert round(qc['q1']) == 0
+    assert round(qc['q3']) == 0
 
 
+## TODO: test environmental
+## TODO: test with few points (between 1 - 20)
 ## TODO: test with qcstats
 ## TODO: test with qcstats from a species with few records (1 record, <20 records)
