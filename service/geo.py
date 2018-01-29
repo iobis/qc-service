@@ -1,6 +1,5 @@
-from math import atan2, sqrt, degrees
+import math
 import numpy as np
-from math import radians, sin, cos
 
 RADIUS = 6371.009
 
@@ -12,18 +11,18 @@ def get_centroid(points):
     avg_x = np.sum(np.cos(lat) * np.cos(lon)) / xy.shape[0]
     avg_y = np.sum(np.cos(lat) * np.sin(lon)) / xy.shape[0]
     avg_z = np.sum(np.sin(lat)) / xy.shape[0]
-    center_lon = atan2(avg_y, avg_x)
-    hyp = sqrt(avg_x * avg_x + avg_y * avg_y)
-    center_lat = atan2(avg_z, hyp)
-    return degrees(center_lon), degrees(center_lat)
+    center_lon = math.atan2(avg_y, avg_x)
+    hyp = math.sqrt(avg_x * avg_x + avg_y * avg_y)
+    center_lat = math.atan2(avg_z, hyp)
+    return math.degrees(center_lon), math.degrees(center_lat)
 
 
 def gc_distance_points(a, points):
     b = np.asarray(points)
-    lat1, lng1 = radians(a[1]), radians(a[0])
+    lat1, lng1 = np.radians(a[1]), np.radians(a[0])
     lat2, lng2 = np.radians(b[:, 1]), np.radians(b[:, 0])
 
-    sin_lat1, cos_lat1 = sin(lat1), cos(lat1)
+    sin_lat1, cos_lat1 = np.sin(lat1), np.cos(lat1)
     sin_lat2, cos_lat2 = np.sin(lat2), np.cos(lat2)
 
     delta_lng = np.subtract(lng2, lng1)
@@ -35,3 +34,7 @@ def gc_distance_points(a, points):
                  sin_lat1 * sin_lat2 + cos_lat1 * cos_lat2 * cos_delta_lng)
 
     return RADIUS * d
+
+
+def point_ewkt(point, srid = 4326):
+    return "SRID=%s;POINT(%s %s)" % (srid, point[0], point[1])

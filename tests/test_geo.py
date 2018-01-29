@@ -29,8 +29,8 @@ def test_get_centroid():
     p = geo.get_centroid(xy)
     assert -180 <= p[0] <= 180 and -90 <= p[1] <= 90
 
-    p = geo.get_centroid([[1,2]])
-    assert round(p[0],6) == 1 and round(p[1],6) == 2
+    p = geo.get_centroid([[1, 2]])
+    assert round(p[0], 6) == 1 and round(p[1], 6) == 2
 
     xy = [(random.uniform(-1, 1), random.uniform(-1, 1)) for _ in range(100000)]
     p = geo.get_centroid(np.asarray(xy))
