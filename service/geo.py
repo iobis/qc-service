@@ -56,8 +56,8 @@ def gc_distance_points(a, points):
 if __name__ == '__main__':
     import random
     random.seed(42)
-    xy = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(1000000)]
-    centr = get_centroid(xy)
+    pts = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(1000000)]
+    centr = get_centroid(pts)
 
     def gc_dist(a, b):
         from math import radians, sin, cos, sqrt, atan2
@@ -77,10 +77,9 @@ if __name__ == '__main__':
 
         return RADIUS * d
 
-    dists = [gc_dist(centr, b) for b in xy]
+    dists = [gc_dist(centr, b) for b in pts]
 
     import cProfile
+
     cProfile.runctx('gc_distance_points(centr, np.asarray(xy))', globals(), locals())
     cProfile.runctx('dists = [gc_dist(centr, b) for b in xy]', globals(), locals())
-
-    # print_timing(landdistance)()

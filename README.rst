@@ -38,6 +38,13 @@ Development environment installation
     # enter virtual evironment
     pipenv shell
 
+Tests
+=====
+
+.. code-block:: shell
+
+    pipenv run nosetests --with-coverage --cover-package=service
+
 Meta
 ====
 
