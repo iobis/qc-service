@@ -11,9 +11,3 @@ def get_values_stats(values):
         q1 = np.percentile(values, 25, interpolation='midpoint')
         q3 = np.percentile(values, 75, interpolation='midpoint')
     return median, mad, q1, q3
-
-
-def get_distance_stats(points):
-    centroid = geo.get_centroid(points)
-    distances = geo.gc_distance_points(centroid, points)
-    return (geo.point_ewkt(centroid),) + get_values_stats(distances)

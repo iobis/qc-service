@@ -14,6 +14,8 @@ nose = "*"
 pyxylookup = {git = "https://github.com/iobis/pyxylookup.git"}
 tox = "*"
 geopy = "*"
+falcon = "*"
+simplejson = "*"
 
 
 [dev-packages]

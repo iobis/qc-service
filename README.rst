@@ -7,19 +7,21 @@ QC service for checking data for and from OBIS
 
 `Source on GitHub at iobis/qc-service <https://github.com/iobis/qc-service>`_
 
-Installation
-============
-
-.. code-block:: shell
-
-    TODO
-
 Example usage
 =============
 
-.. code-block:: python
+TODO
 
-    TODO
+.. code-block:: json
+    {
+        "environmental": {
+            "bathymetry": {"ok_mad": []}
+        },
+        "spatial": {
+
+        }
+    }
+
 
 
 Development environment installation
