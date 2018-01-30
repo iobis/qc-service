@@ -1,4 +1,5 @@
 import random
+import vcr
 from service import outliers
 
 
@@ -24,6 +25,16 @@ def test_spatial():
     assert round(qc['q1']) == 0
     assert round(qc['q3']) == 0
 
+@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental.yaml')
+def test_environmental():
+    random.seed(42)
+    xy = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(150)]
+    # qc = outliers.environmental(xy, None, None)
+    # for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
+    #     g = qc[grid]
+    #     assert len(g['ok_mad']) == len(xy)
+    #     assert len(g['ok_iqr']) == len(xy)
+        # TODO CONTINUE HERE
 
 ## TODO: test environmental
 ## TODO: test with few points (between 1 - 20)
