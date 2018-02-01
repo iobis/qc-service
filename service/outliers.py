@@ -22,8 +22,8 @@ def environmental(points, mad_coef, iqr_coef, qcstats=None):
             median, mad, q1, q3 = stats.get_values_stats(values)
         else:
             median, mad, q1, q3 = qcstats[grid]
-        ok_mad = (median - median + (mad * mad_coef)) < values < (median + (mad * mad_coef))
-        ok_iqr = (q1 - ((q3 - q1) * iqr_coef)) < values < (q3 + ((q3 - q1) * iqr_coef))
+        ok_mad = ((median - median + (mad * mad_coef)) < values) & (values < (median + (mad * mad_coef)))
+        ok_iqr = ((q1 - ((q3 - q1) * iqr_coef)) < values) & (values < (q3 + ((q3 - q1) * iqr_coef)))
         qc[grid] = {'ok_mad': ok_mad[duplicate_indices], 'ok_iqr': ok_iqr[duplicate_indices],
                     'median': median, 'mad': mad, 'q1': q1, 'q3': q3}
     return qc

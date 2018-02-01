@@ -1,8 +1,9 @@
 import numpy as np
-from service import geo
 
 
 def get_values_stats(values):
+    values = np.asarray(values)
+    values = values[~np.isnan(values)]
     median = np.median(values)
     mad, q1, q3 = None, None, None
     if len(values) > 1:

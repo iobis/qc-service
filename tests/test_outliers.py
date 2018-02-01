@@ -29,11 +29,11 @@ def test_spatial():
 def test_environmental():
     random.seed(42)
     xy = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(150)]
-    # qc = outliers.environmental(xy, None, None)
-    # for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
-    #     g = qc[grid]
-    #     assert len(g['ok_mad']) == len(xy)
-    #     assert len(g['ok_iqr']) == len(xy)
+    qc = outliers.environmental(xy, None, None)
+    for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
+        g = qc[grid]
+        assert len(g['ok_mad']) == len(xy)
+        assert len(g['ok_iqr']) == len(xy)
         # TODO CONTINUE HERE
 
 ## TODO: test environmental
