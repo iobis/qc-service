@@ -25,8 +25,10 @@ def test_spatial():
     assert round(qc['q1']) == 0
     assert round(qc['q3']) == 0
 
+
 @vcr.use_cassette('tests/vcr_cassettes/outliers_environmental.yaml')
 def test_environmental():
+    """outliers - environmental"""
     random.seed(42)
     xy = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(150)]
     qc = outliers.environmental(xy, None, None)
@@ -34,9 +36,29 @@ def test_environmental():
         g = qc[grid]
         assert len(g['ok_mad']) == len(xy)
         assert len(g['ok_iqr']) == len(xy)
-        # TODO CONTINUE HERE
+        for k in ['median', 'mad', 'q1', 'q3']:
+            assert isinstance(g[k], float) and g[k] != 0
 
-## TODO: test environmental
+
+@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_few_points.yaml')
+def test_environmental_few_points():
+    """outliers - environmental few points"""
+    pass
+
+
+@vcr.use_cassette('tests/vcr_cassettes/outliers_spatial_qcstats.yaml')
+def test_spatial_qcstats():
+    """outliers - spatial qc stats"""
+    pass
+
+
+@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_qcstats.yaml')
+def test_environmental_qcstats():
+    """outliers - environmental qc stats"""
+    pass
+
+
+
 ## TODO: test with few points (between 1 - 20)
 ## TODO: test with qcstats
 ## TODO: test with qcstats from a species with few records (1 record, <20 records)
