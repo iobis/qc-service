@@ -1,7 +1,7 @@
 import math
 import numpy as np
 
-RADIUS = 6371.009
+RADIUS = 6371009  # in meters
 
 
 def get_centroid(points):
