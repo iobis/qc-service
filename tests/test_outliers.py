@@ -3,12 +3,12 @@ import vcr
 import numpy as np
 from service import outliers
 from service import taxoninfo
+import tests as t
 
 
 def test_spatial():
     """outliers - spatial"""
-    random.seed(42)
-    points = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(150)]
+    points = t.rand_xy_list(150)
     qc = outliers.spatial(points, None, None)
     assert len(qc['ok_mad']) == len(points)
     assert len(qc['ok_iqr']) == len(points)
@@ -31,8 +31,7 @@ def test_spatial():
 @vcr.use_cassette('tests/vcr_cassettes/outliers_environmental.yaml')
 def test_environmental():
     """outliers - environmental"""
-    random.seed(42)
-    points = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(150)]
+    points = t.rand_xy_list(150)
     qc = outliers.environmental(points, None, None)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
@@ -46,7 +45,7 @@ def test_environmental():
 def test_environmental_few_points():
     """outliers - environmental few points"""
 
-    points = [(random.uniform(-1, 1), random.uniform(-1, 1)) for _ in range(1)]
+    points = t.rand_xy_list(1, -1, 1, -1, 1)
     qc = outliers.environmental(points, None, None)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
@@ -56,8 +55,7 @@ def test_environmental_few_points():
         for k in ['mad', 'q1', 'q3']:
             assert g[k] is None
 
-    random.seed(42)
-    xy = [(random.uniform(-1, 1), random.uniform(-1, 1)) for _ in range(10)]
+    xy = t.rand_xy_list(10, -1, 1, -1, 1)
     qc = outliers.environmental(xy, mad_coef=1, iqr_coef=0.1)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
@@ -82,9 +80,8 @@ def test_environmental_few_points():
 @vcr.use_cassette('tests/vcr_cassettes/outliers_spatial_qcstats.yaml')
 def test_spatial_qcstats():
     """outliers - spatial qc stats"""
-    random.seed(42)
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
-    points = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(150)]
+    points = t.rand_xy_list(150)
     qc = outliers.spatial(points, None, None, qcstats=qcstats)
     assert len(qc['ok_mad']) == len(points) and 0 < np.sum(qc['ok_mad']) < len(points)
     assert len(qc['ok_iqr']) == len(points) and 0 < np.sum(qc['ok_iqr']) < len(points)
@@ -95,9 +92,8 @@ def test_spatial_qcstats():
 @vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_qcstats.yaml')
 def test_environmental_qcstats():
     """outliers - environmental qc stats"""
-    random.seed(42)
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
-    points = [(random.uniform(-180, 180), random.uniform(-90, 90)) for _ in range(150)]
+    points = t.rand_xy_list(150)
     qc = outliers.environmental(points, 12, 6, qcstats=qcstats)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]

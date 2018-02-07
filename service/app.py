@@ -8,6 +8,12 @@ from service import outliers, taxoninfo
 class QcResource(object):
 
     @staticmethod
+    def _floatOrNone(v):
+        if v is None:
+            return None
+        return float(v)
+
+    @staticmethod
     def _validate_coef(coef, param):
         try:
             if coef is not None:
@@ -50,9 +56,9 @@ class QcResource(object):
         else:
             x = req.get_param_as_list('x')
             y = req.get_param_as_list('y')
-            aphiaid = req.get_param_as_int('aphiaid')
-            mad_coef = req.get_param_as_float('mad_coef')
-            iqr_coef = req.get_param_as_float('iqr_coef')
+            aphiaid = QcResource._floatOrNone(req.get_param_as_int('aphiaid', required=False))
+            mad_coef = QcResource._floatOrNone(req.get_param('mad_coef', required=False))
+            iqr_coef = QcResource._floatOrNone(req.get_param('iqr_coef', required=False))
             if not x or not y or len(x) == 0 or len(y) == 0:
                 raise falcon.HTTPInvalidParam('Missing parameters x and/or y', 'x/y')
             elif len(x) != len(y):
@@ -95,7 +101,6 @@ class QcSpeciesResource(QcResource):
         try:
             qcstats = None
             if aphiaid is not None:
-                # TODO what should be done when there are no qcstats for the aphiaid provided (e.g. when not enough points/on land)
                 qcstats = taxoninfo.qc_stats(aphiaid)
             qc = outliers.environmental(points, mad_coef, iqr_coef, qcstats)
             qc['spatial'] = outliers.spatial(points, mad_coef, iqr_coef, qcstats)
@@ -130,9 +135,14 @@ class QcDatasetResource(QcResource):
         self._prepare_response(results, req, resp)
 
 
-api = falcon.API()
-api.add_route('/outliersspecies', QcSpeciesResource())
-api.add_route('/outliersdataset', QcDatasetResource())
+def create():
+    api = falcon.API()
+    api.add_route('/outliersspecies', QcSpeciesResource())
+    api.add_route('/outliersdataset', QcDatasetResource())
+    return api
+
+
+api = create()
 
 if __name__ == '__main__':
     from wsgiref import simple_server
