@@ -13,6 +13,7 @@ install:
   - pip install coveralls
   - pip install vcrpy
   - pip install nose
+  - pip install falcon
   - pip install git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup
 
 script:
