@@ -26,7 +26,7 @@ def environmental(points, mad_coef, iqr_coef, qcstats=None):
             ok_mad = ((median - (mad * mad_coef)) < values) & (values < (median + (mad * mad_coef)))
         if q1 is not None and q3 is not None:
             ok_iqr = ((q1 - ((q3 - q1) * iqr_coef)) < values) & (values < (q3 + ((q3 - q1) * iqr_coef)))
-        qc[grid] = {'ok_mad': ok_mad[duplicate_indices], 'ok_iqr': ok_iqr[duplicate_indices],
+        qc[grid] = {'ok_mad': ok_mad[duplicate_indices].tolist(), 'ok_iqr': ok_iqr[duplicate_indices].tolist(),
                     'median': median, 'mad': mad, 'q1': q1, 'q3': q3}
     return qc
 
@@ -48,7 +48,7 @@ def spatial(points, mad_coef, iqr_coef, qcstats=None):
     ok_mad = distances < (median + (mad * mad_coef))
     ok_iqr = distances < (q3 + ((q3-q1) * iqr_coef))
 
-    return {'ok_mad': ok_mad[duplicate_indices], 'ok_iqr': ok_iqr[duplicate_indices],
+    return {'ok_mad': ok_mad[duplicate_indices].tolist(), 'ok_iqr': ok_iqr[duplicate_indices].tolist(),
             'centroid': geo.point_ewkt(centroid), 'median': median, 'mad': mad, 'q1': q1, 'q3': q3}
 
 

@@ -18,10 +18,10 @@ class QcResource(object):
         try:
             if coef is not None:
                 coef = float(coef)
+                if coef < 0:
+                    raise falcon.HTTPInvalidParam('Invalid %s: cannot be smaller then 0' % param, param)
         except ValueError:
             raise falcon.HTTPInvalidParam('%s not numeric' % param, param)
-        if coef < 0:
-            raise falcon.HTTPInvalidParam('Invalid %s: cannot be smaller then 0' % param, param)
         return coef
 
     @staticmethod
@@ -122,7 +122,7 @@ class QcDatasetResource(QcResource):
     def _qc_dataset(req):
         points, _, mad_coef, iqr_coef = QcResource._parse_request(req)
         try:
-            return outliers.spatial(points, mad_coef, iqr_coef)
+            return {'spatial': outliers.spatial(points, mad_coef, iqr_coef)}
         except Exception as ex:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
 
