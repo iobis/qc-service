@@ -13,20 +13,20 @@ Parameters
 
 There are two endpoints: *outliersspecies* and *outliersdatasets*.
 
-They expect the following parameters for a GET request:
+The following parameters are GET request:
 
-- x
-- y
-- mad_coef
-- iqr_coef
-- aphiaid: only for the *outliersspecies* endpoint
+- **x**: longitude of the points
+- **y**: latitude of the points
+- mad_coef (optional): Coefficient to multiply the median absolute deviation (MAD) by in order to determine the range of valid values
+- iqr_coef (optional): Coefficient to multiply the interquartile range (IQR) by in order to determine the range of valid values
+- aphiaid (optional): taxonomic identifier as provided by the world register of marine species (WoRMS), this is parameter is only used by the *outliersspecies* endpoint
 
 For a POST request a json or msgpack object with the following attributes is expected:
 
-- points
-- mad_coef
-- iqr_coef
-- aphiaid: only for the *outliersspecies* endpoint
+- **points**: nested list of longitude/latitude pairs
+- mad_coef (optional): Coefficient to multiply the median absolute deviation (MAD) by in order to determine the range of valid values
+- iqr_coef (optional): Coefficient to multiply the interquartile range (IQR) by in order to determine the range of valid values
+- aphiaid (optional): taxonomic identifier as provided by the world register of marine species (WoRMS), this is parameter is only used by the *outliersspecies* endpoint
 
 Example usage
 =============
@@ -67,6 +67,17 @@ Tests
 .. code-block:: shell
 
     pipenv run nosetests --with-coverage --cover-package=service
+
+Deploying
+=========
+
+1) generate requirements.txt
+
+.. code-block:: shell
+
+    pipenv lock -r > requirements.txt
+
+2)
 
 Meta
 ====
