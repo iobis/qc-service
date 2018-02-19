@@ -16,6 +16,8 @@ tox = "*"
 geopy = "*"
 falcon = "*"
 simplejson = "*"
+"json-logging-py" = "*"
+gunicorn = "*"
 
 
 [dev-packages]

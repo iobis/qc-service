@@ -56,6 +56,8 @@ Development environment installation
     pipenv install nose
     pipenv install requests
     pipenv install pandas
+    pipenv install json-logging-py
+    pipenv install gunicorn
     pipenv install sphinx sphinx-autobuild sphinx_rtd_theme
     pipenv install git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup
     # enter virtual evironment
@@ -64,9 +66,18 @@ Development environment installation
 Tests
 =====
 
+Run tests
+
 .. code-block:: shell
 
     pipenv run nosetests --with-coverage --cover-package=service
+
+Run locally
+
+.. code-block:: shell
+
+    pipenv run gunicorn service.app:api
+
 
 Deploying
 =========
