@@ -82,13 +82,25 @@ Run locally
 Deploying
 =========
 
-1) generate requirements.txt
+1) (Optional) generate requirements.txt
 
 .. code-block:: shell
 
     pipenv lock -r > requirements.txt
 
-2)
+And remove git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup from it.
+
+2) Build Docker image
+
+.. code-block:: shell
+
+    docker build -t qc-service .
+
+3) Start Docker image
+
+.. code-block:: shell
+
+    docker run -e GUNICORN_WORKERS=4 -e GUNICORN_ACCESSLOG=- -p 8000:8000 qc-service
 
 Meta
 ====
