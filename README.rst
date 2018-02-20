@@ -44,7 +44,6 @@ GET outliersdataset: <http://localhost:8000/outliersdataset?x=50.1936,-170.9961,
 .. code-block:: json
     {"spatial": {"ok_mad": [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true], "ok_iqr": [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true], "centroid": "SRID=4326;POINT(156.73819714431002 86.1317707629376)", "median": 7729884.218843833, "mad": 4223770.357516784, "q1": 3750079.9391325824, "q3": 12910808.479267936}}
 
-
 Development environment installation
 ====================================
 
@@ -90,17 +89,21 @@ Deploying
 
 And remove git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup from it.
 
-2) Build Docker image
+2) Use docker-compose or build and start
+
+.. code-block:: shell
+
+    docker-compose up
+
+
+Alternative is to build and start the Docker image
 
 .. code-block:: shell
 
     docker build -t qc-service .
-
-3) Start Docker image
-
-.. code-block:: shell
-
     docker run -e GUNICORN_WORKERS=4 -e GUNICORN_ACCESSLOG=- -p 8000:8000 qc-service
+
+3) Configure the two endpoints (outliersspecies and outliersdataset) in NGINX
 
 Meta
 ====
