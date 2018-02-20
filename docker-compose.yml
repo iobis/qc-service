@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+
+  qc-service:
+    container_name: qc-service
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - GUNICORN_WORKERS=4
+      - GUNICORN_ACCESSLOG=-
