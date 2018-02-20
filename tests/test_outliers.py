@@ -28,6 +28,21 @@ def test_spatial():
     assert round(qc['q3']/1000) == 0
 
 
+def test_spatial_few_points():
+    """ outliers - spatial few points """
+    points = [[1,2]]
+    qc = outliers.spatial(points, None, None)
+    assert len(qc['ok_mad']) == len(points) and np.all(qc['ok_mad'])
+    assert len(qc['ok_iqr']) == len(points) and np.all(qc['ok_iqr'])
+    print(qc)
+    assert qc['centroid'].startswith('SRID=4326;POINT(')
+    x, y = [float(x) for x in qc['centroid'].replace('SRID=4326;POINT(', '').replace(')', '').split(' ')]
+    assert abs(round(x) - 1) < 0.00001 and abs(round(y) - 2) < 0.00001
+    assert abs(round(qc['median'])) < 0.00001
+    for k in ['mad', 'q1', 'q3']:
+        assert qc[k] is None
+
+
 @vcr.use_cassette('tests/vcr_cassettes/outliers_environmental.yaml')
 def test_environmental():
     """outliers - environmental"""

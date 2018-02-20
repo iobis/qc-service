@@ -53,6 +53,16 @@ def test_api_species_get_works():
     _check_outliersspecies_result(result)
 
 
+@vcr.use_cassette('tests/vcr_cassettes/api_species_get_few_points.yaml')
+def test_api_species_get_few_points():
+    """ api species - get few points """
+    qs = 'x=1&y=2'
+    result = client.simulate_get('/outliersspecies', query_string=qs)
+    print(result.status_code)
+    print(result.json)
+    _check_outliersspecies_result(result)
+
+
 @vcr.use_cassette('tests/vcr_cassettes/api_species_post_works.yaml')
 def test_api_species_post_works():
     """ api species - post works """
