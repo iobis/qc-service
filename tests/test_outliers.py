@@ -28,6 +28,13 @@ def test_spatial():
     assert round(qc['q3']/1000) == 0
 
 
+def test_spatial():
+    """outliers - spatial return values"""
+    points = t.rand_xy_list(150)
+    qc = outliers.spatial(points, None, None, return_values=True)
+    assert len(qc['values']) == len(points)
+
+
 def test_spatial_few_points():
     """ outliers - spatial few points """
     points = [[1,2]]
@@ -52,6 +59,20 @@ def test_environmental():
         g = qc[grid]
         assert len(g['ok_mad']) == len(points)
         assert len(g['ok_iqr']) == len(points)
+        for k in ['median', 'mad', 'q1', 'q3']:
+            assert isinstance(g[k], float) and g[k] != 0
+
+
+@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_return_values.yaml')
+def test_environmental():
+    """outliers - environmental return values"""
+    points = t.rand_xy_list(150)
+    qc = outliers.environmental(points, None, None, return_values=True)
+    for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
+        g = qc[grid]
+        assert len(g['ok_mad']) == len(points)
+        assert len(g['ok_iqr']) == len(points)
+        assert len(g['values']) == len(points)
         for k in ['median', 'mad', 'q1', 'q3']:
             assert isinstance(g[k], float) and g[k] != 0
 

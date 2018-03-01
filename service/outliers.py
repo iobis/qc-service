@@ -7,17 +7,20 @@ MAD_COEF = 6
 IQR_COEF = 3
 
 
-def _values_qc(values, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices):
+def _values_qc(values, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices, return_values):
     ok_mad = ok_iqr = np.full(len(values), True)
     if median is not None and mad is not None:
         ok_mad = ((median - (mad * mad_coef)) < values) & (values < (median + (mad * mad_coef)))
     if q1 is not None and q3 is not None:
         ok_iqr = ((q1 - ((q3 - q1) * iqr_coef)) < values) & (values < (q3 + ((q3 - q1) * iqr_coef)))
-    return {'ok_mad': ok_mad[duplicate_indices].tolist(), 'ok_iqr': ok_iqr[duplicate_indices].tolist(),
-            'median': median, 'mad': mad, 'q1': q1, 'q3': q3}
+    qc = {'ok_mad': ok_mad[duplicate_indices].tolist(), 'ok_iqr': ok_iqr[duplicate_indices].tolist(),
+          'median': median, 'mad': mad, 'q1': q1, 'q3': q3}
+    if return_values:
+        qc['values'] = values[duplicate_indices].tolist()
+    return qc
 
 
-def environmental(points, mad_coef, iqr_coef, qcstats=None):
+def environmental(points, mad_coef, iqr_coef, qcstats=None, return_values=False):
     points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
     if mad_coef is None:
         mad_coef = MAD_COEF
@@ -32,12 +35,12 @@ def environmental(points, mad_coef, iqr_coef, qcstats=None):
         else:
             median, mad, q1, q3 = qcstats[grid]
 
-        qc[grid] = _values_qc(values, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices)
+        qc[grid] = _values_qc(values, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices, return_values)
 
     return qc
 
 
-def spatial(points, mad_coef, iqr_coef, qcstats=None):
+def spatial(points, mad_coef, iqr_coef, qcstats=None, return_values=False):
     points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
     if mad_coef is None:
         mad_coef = MAD_COEF
@@ -51,7 +54,7 @@ def spatial(points, mad_coef, iqr_coef, qcstats=None):
         centroid, median, mad, q1, q3 = qcstats['spatial']
         distances = geo.gc_distance_points(centroid, points)
 
-    qc = _values_qc(distances, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices)
+    qc = _values_qc(distances, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices, return_values)
     qc['centroid'] = geo.point_ewkt(centroid)
     return qc
 

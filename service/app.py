@@ -8,7 +8,7 @@ from service import outliers, taxoninfo
 class QcResource(object):
 
     @staticmethod
-    def _floatOrNone(v):
+    def _float_or_none(v):
         if v is None:
             return None
         return float(v)
@@ -23,6 +23,13 @@ class QcResource(object):
         except ValueError:
             raise falcon.HTTPInvalidParam('%s not numeric' % param, param)
         return coef
+
+    @staticmethod
+    def _param_as_bool_with_default(req, paramname, default=False):
+        v = req.get_param_as_bool(paramname, blank_as_true=default)
+        if v is None:
+            v = default
+        return v
 
     @staticmethod
     def _parse_request(req):
@@ -53,12 +60,14 @@ class QcResource(object):
             aphiaid = data.get('aphiaid', None)
             mad_coef = data.get('mad_coef', None)
             iqr_coef = data.get('iqr_coef', None)
+            return_values = data.get('returnvalues', False)
         else:
             x = req.get_param_as_list('x')
             y = req.get_param_as_list('y')
-            aphiaid = QcResource._floatOrNone(req.get_param_as_int('aphiaid', required=False))
-            mad_coef = QcResource._floatOrNone(req.get_param('mad_coef', required=False))
-            iqr_coef = QcResource._floatOrNone(req.get_param('iqr_coef', required=False))
+            aphiaid = QcResource._float_or_none(req.get_param_as_int('aphiaid', required=False))
+            mad_coef = QcResource._float_or_none(req.get_param('mad_coef', required=False))
+            iqr_coef = QcResource._float_or_none(req.get_param('iqr_coef', required=False))
+            return_values = QcResource._param_as_bool_with_default(req, 'returnvalues', default=False)
             if not x or not y or len(x) == 0 or len(y) == 0:
                 raise falcon.HTTPInvalidParam('Missing parameters x and/or y', 'x/y')
             elif len(x) != len(y):
@@ -76,7 +85,7 @@ class QcResource(object):
         if not all([-180 <= p[0] <= 180 and -90 <= p[1] <= 90 for p in points]):
             raise falcon.HTTPInvalidParam('Invalid coordinates (xmin: -180, ymin: -90, xmax: 180, ymax: 90)', 'x/y points')
 
-        return points, aphiaid, mad_coef, iqr_coef
+        return points, aphiaid, mad_coef, iqr_coef, return_values
 
     @staticmethod
     def _prepare_response(results, req, resp):
@@ -97,13 +106,13 @@ class QcResource(object):
 class QcSpeciesResource(QcResource):
     @staticmethod
     def _qc_species(req):
-        points, aphiaid, mad_coef, iqr_coef = QcResource._parse_request(req)
+        points, aphiaid, mad_coef, iqr_coef, return_values = QcResource._parse_request(req)
         try:
             qcstats = None
             if aphiaid is not None:
                 qcstats = taxoninfo.qc_stats(aphiaid)
-            qc = outliers.environmental(points, mad_coef, iqr_coef, qcstats)
-            qc['spatial'] = outliers.spatial(points, mad_coef, iqr_coef, qcstats)
+            qc = outliers.environmental(points, mad_coef, iqr_coef, qcstats, return_values)
+            qc['spatial'] = outliers.spatial(points, mad_coef, iqr_coef, qcstats, return_values)
             return qc
         except Exception as ex:
                 raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
@@ -120,9 +129,9 @@ class QcSpeciesResource(QcResource):
 class QcDatasetResource(QcResource):
     @staticmethod
     def _qc_dataset(req):
-        points, _, mad_coef, iqr_coef = QcResource._parse_request(req)
+        points, _, mad_coef, iqr_coef, return_values = QcResource._parse_request(req)
         try:
-            return {'spatial': outliers.spatial(points, mad_coef, iqr_coef)}
+            return {'spatial': outliers.spatial(points, mad_coef, iqr_coef, return_values=return_values)}
         except Exception as ex:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
 

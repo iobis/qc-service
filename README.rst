@@ -17,16 +17,18 @@ The following parameters are GET request:
 
 - **x**: longitude of the points
 - **y**: latitude of the points
-- mad_coef (optional): Coefficient to multiply the median absolute deviation (MAD) by in order to determine the range of valid values
-- iqr_coef (optional): Coefficient to multiply the interquartile range (IQR) by in order to determine the range of valid values
-- aphiaid (optional): taxonomic identifier as provided by the world register of marine species (WoRMS), this is parameter is only used by the *outliersspecies* endpoint
+- mad_coef (optional): Coefficient to multiply the median absolute deviation (MAD) by in order to determine the range of valid values (default is 6)
+- iqr_coef (optional): Coefficient to multiply the interquartile range (IQR) by in order to determine the range of valid values (default is 3)
+- aphiaid (optional): Taxonomic identifier as provided by the world register of marine species (WoRMS), this is parameter is only used by the *outliersspecies* endpoint
+- returnvalues (optional): Return the values based on which the outlier analysis is done (default is false).
 
 For a POST request a json or msgpack object with the following attributes is expected:
 
 - **points**: nested list of longitude/latitude pairs
-- mad_coef (optional): Coefficient to multiply the median absolute deviation (MAD) by in order to determine the range of valid values
-- iqr_coef (optional): Coefficient to multiply the interquartile range (IQR) by in order to determine the range of valid values
+- mad_coef (optional): Coefficient to multiply the median absolute deviation (MAD) by in order to determine the range of valid values (default is 6)
+- iqr_coef (optional): Coefficient to multiply the interquartile range (IQR) by in order to determine the range of valid values (default is 3)
 - aphiaid (optional): taxonomic identifier as provided by the world register of marine species (WoRMS), this is parameter is only used by the *outliersspecies* endpoint
+- returnvalues (optional): Return the values based on which the outlier analysis is done (default is false).
 
 Example usage
 =============
