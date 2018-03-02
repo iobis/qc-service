@@ -130,8 +130,8 @@ def test_spatial_qcstats():
 def test_environmental_qcstats():
     """outliers - environmental qc stats"""
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
-    points = t.rand_xy_list(150)
-    qc = outliers.environmental(points, 12, 6, qcstats=qcstats)
+    points, duplicate_indices = t.rand_xy_list(150)
+    qc = outliers.environmental(points, duplicate_indices, 12, 6, qcstats=qcstats)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
         print(grid)
