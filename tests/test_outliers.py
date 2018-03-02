@@ -8,8 +8,8 @@ import tests as t
 
 def test_spatial():
     """outliers - spatial"""
-    points = t.rand_xy_list(150)
-    qc = outliers.spatial(points, None, None)
+    points, duplicate_indices = t.rand_xy_list(150)
+    qc = outliers.spatial(points, duplicate_indices, None, None)
     assert len(qc['ok_mad']) == len(points)
     assert len(qc['ok_iqr']) == len(points)
     assert len(qc['centroid']) > 0 and "SRID=4326;POINT(" in qc['centroid']
@@ -18,7 +18,8 @@ def test_spatial():
     assert 12000e3 > qc['q1'] > 2000e3
     assert 24000e3 > qc['q3'] > 6000e3
     xy = [(random.uniform(-0.001, 0.001), random.uniform(-0.001, 0.001)) for _ in range(100)]
-    qc = outliers.spatial(xy, None, None)
+    duplicate_indices = list(range(100))
+    qc = outliers.spatial(xy, duplicate_indices, None, None)
     assert len(qc['ok_mad']) == len(xy)
     assert len(qc['ok_iqr']) == len(xy)
     assert qc['centroid'].startswith('SRID=4326;POINT(')
@@ -30,14 +31,14 @@ def test_spatial():
 
 def test_spatial():
     """outliers - spatial return values"""
-    points = t.rand_xy_list(150)
-    qc = outliers.spatial(points, None, None, return_values=True)
+    points, duplicate_indices = t.rand_xy_list(150)
+    qc = outliers.spatial(points, duplicate_indices, None, None, return_values=True)
     assert len(qc['values']) == len(points)
 
 
 def test_spatial_few_points():
     """ outliers - spatial few points """
-    points = [[1,2]]
+    points, duplicate_indices = [[1,2]], [0]
     qc = outliers.spatial(points, None, None)
     assert len(qc['ok_mad']) == len(points) and np.all(qc['ok_mad'])
     assert len(qc['ok_iqr']) == len(points) and np.all(qc['ok_iqr'])
@@ -53,8 +54,8 @@ def test_spatial_few_points():
 @vcr.use_cassette('tests/vcr_cassettes/outliers_environmental.yaml')
 def test_environmental():
     """outliers - environmental"""
-    points = t.rand_xy_list(150)
-    qc = outliers.environmental(points, None, None)
+    points, duplicate_indices = t.rand_xy_list(150)
+    qc = outliers.environmental(points, duplicate_indices, None, None)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
         assert len(g['ok_mad']) == len(points)
@@ -66,8 +67,8 @@ def test_environmental():
 @vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_return_values.yaml')
 def test_environmental():
     """outliers - environmental return values"""
-    points = t.rand_xy_list(150)
-    qc = outliers.environmental(points, None, None, return_values=True)
+    points, duplicate_indices = t.rand_xy_list(150)
+    qc = outliers.environmental(points, duplicate_indices, None, None, return_values=True)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
         assert len(g['ok_mad']) == len(points)
@@ -81,8 +82,8 @@ def test_environmental():
 def test_environmental_few_points():
     """outliers - environmental few points"""
 
-    points = t.rand_xy_list(1, -1, 1, -1, 1)
-    qc = outliers.environmental(points, None, None)
+    points, duplicate_indices = t.rand_xy_list(1, -1, 1, -1, 1)
+    qc = outliers.environmental(points, duplicate_indices, None, None)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
         assert len(g['ok_mad']) == len(points) and np.all(g['ok_mad'])
@@ -103,7 +104,7 @@ def test_environmental_few_points():
         assert g['q3'] is None
 
     random.seed(42)
-    points = [(random.uniform(-1, 1), random.uniform(-1, 1)) for _ in range(21)]
+    points, duplicate_indices = [(random.uniform(-1, 1), random.uniform(-1, 1)) for _ in range(21)], list(range(21))
     qc = outliers.environmental(points, mad_coef=1, iqr_coef=0.1)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
@@ -117,7 +118,7 @@ def test_environmental_few_points():
 def test_spatial_qcstats():
     """outliers - spatial qc stats"""
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
-    points = t.rand_xy_list(150)
+    points, duplicate_indices = t.rand_xy_list(150)
     qc = outliers.spatial(points, None, None, qcstats=qcstats)
     assert len(qc['ok_mad']) == len(points) and 0 < np.sum(qc['ok_mad']) < len(points)
     assert len(qc['ok_iqr']) == len(points) and 0 < np.sum(qc['ok_iqr']) < len(points)
