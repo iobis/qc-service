@@ -50,11 +50,12 @@ def _check_outlierstaxon_result(result, content=None, return_values=False):
             assert v in content[k]
         if return_values:
             assert 'values' in content[k]
+    return content
 
 
 @vcr.use_cassette('tests/vcr_cassettes/api_taxon_get_works.yaml')
-def test_api_species_get_works():
-    """ api species - get works """
+def test_api_taxon_get_works():
+    """ api taxon - get works """
     x, y = t.rand_xy_tuple(150)
     qs = 'x={0}&y={1}'.format(','.join(map(str, x)), ','.join(map(str, y)))
     result = client.simulate_get('/outlierstaxon', query_string=qs)
@@ -134,3 +135,12 @@ def test_api_dataset_post_works():
     content = msgpack.loads(result2.content)
     _check_outliersdataset_result(result2, content)
     assert result1.json == content
+
+
+@vcr.use_cassette('tests/vcr_cassettes/api_taxon_aphiaid_works.yaml')
+def test_api_taxon_aphiaid_works():
+    qs = 'x=1&y=2&aphiaid=144132'
+    result = client.simulate_get('/outlierstaxon', query_string=qs)
+    content = _check_outlierstaxon_result(result)
+    assert content['count'] > 1
+    assert content['bathymetry']['mad'] is not None

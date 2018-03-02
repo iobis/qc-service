@@ -14,6 +14,12 @@ class QcResource(object):
         return float(v)
 
     @staticmethod
+    def _int_or_none(v):
+        if v is None:
+            return None
+        return int(v)
+
+    @staticmethod
     def _validate_coef(coef, param):
         try:
             if coef is not None:
@@ -64,7 +70,7 @@ class QcResource(object):
         else:
             x = req.get_param_as_list('x')
             y = req.get_param_as_list('y')
-            aphiaid = QcResource._float_or_none(req.get_param_as_int('aphiaid', required=False))
+            aphiaid = QcResource._int_or_none(req.get_param_as_int('aphiaid', required=False))
             mad_coef = QcResource._float_or_none(req.get_param('mad_coef', required=False))
             iqr_coef = QcResource._float_or_none(req.get_param('iqr_coef', required=False))
             return_values = QcResource._param_as_bool_with_default(req, 'returnvalues', default=False)
@@ -105,7 +111,7 @@ class QcResource(object):
 
 class QcTaxonResource(QcResource):
     @staticmethod
-    def _qc_species(req):
+    def _qc_taxon(req):
         points, aphiaid, mad_coef, iqr_coef, return_values = QcResource._parse_request(req)
         try:
             qcstats = None
@@ -125,11 +131,11 @@ class QcTaxonResource(QcResource):
                 raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
 
     def on_get(self, req, resp):
-        results = self._qc_species(req)
+        results = self._qc_taxon(req)
         self._prepare_response(results, req, resp)
 
     def on_post(self, req, resp):
-        results = self._qc_species(req)
+        results = self._qc_taxon(req)
         self._prepare_response(results, req, resp)
 
 

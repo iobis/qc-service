@@ -5,7 +5,7 @@ from service import taxoninfo
 test_aphiaid = 141433
 
 
-@vcr.use_cassette('tests/vcr_cassettes/fetch_taxon_qc_stats.yaml')
+@vcr.use_cassette('tests/fetch_taxon_qc_stats.yaml')
 def test_fetch_taxon_qc():
     """taxoninfo - qc stats"""
     stats = taxoninfo.qc_stats(test_aphiaid)
@@ -33,7 +33,7 @@ def test_fetch_taxon_qc_missing_species():
 
 @vcr.use_cassette('tests/vcr_cassettes/fetch_taxon_qc_stats_data_poor_species.yaml')
 def test_fetch_taxon_qc_missing_species():
-    """taxoninfo - qc stats data poor species"""
+    """taxoninfo - qc stats data poor taxon"""
     stats = taxoninfo.qc_stats(495041)  # Sargassum desvauxii: 1 record
     assert stats['count'] == 1
     centroid, median, mad, q1, q3 = stats['spatial']
