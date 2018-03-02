@@ -124,7 +124,8 @@ def test_api_dataset_get_works():
 @vcr.use_cassette('tests/vcr_cassettes/api_dataset_post_works.yaml')
 def test_api_dataset_post_works():
     """ api dataset - post works """
-    points = t.rand_xy_list(150)
+    points, _ = t.rand_xy_list(150)
+    points = points.tolist()
     body = json.dumps({'points': points})
     result1 = client.simulate_post('/outliersdataset', body=body)
     _check_outliersdataset_result(result1)

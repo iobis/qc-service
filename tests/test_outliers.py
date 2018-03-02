@@ -105,7 +105,7 @@ def test_environmental_few_points():
 
     random.seed(42)
     points, duplicate_indices = [(random.uniform(-1, 1), random.uniform(-1, 1)) for _ in range(21)], list(range(21))
-    qc = outliers.environmental(points, mad_coef=1, iqr_coef=0.1)
+    qc = outliers.environmental(points, duplicate_indices, mad_coef=1, iqr_coef=0.1)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
         assert len(g['ok_mad']) == len(points) and 0 < np.sum(g['ok_mad']) < len(points)
