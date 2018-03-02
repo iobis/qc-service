@@ -9,12 +9,16 @@ IQR_COEF = 3
 
 def _values_qc(values, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices, return_values):
     ok_mad = ok_iqr = np.full(len(values), True)
+    mad_limits, iqr_limits = (None, None), (None, None)
     if median is not None and mad is not None:
-        ok_mad = ((median - (mad * mad_coef)) < values) & (values < (median + (mad * mad_coef)))
+        mad_limits = (median - (mad * mad_coef)), (median + (mad * mad_coef))
+        ok_mad = (mad_limits[0] < values) & (values < mad_limits[1])
     if q1 is not None and q3 is not None:
-        ok_iqr = ((q1 - ((q3 - q1) * iqr_coef)) < values) & (values < (q3 + ((q3 - q1) * iqr_coef)))
+        iqr_limits = (q1 - ((q3 - q1) * iqr_coef)), (q3 + ((q3 - q1) * iqr_coef))
+        ok_iqr = (iqr_limits[0] < values) & (values < iqr_limits[1])
     qc = {'ok_mad': ok_mad[duplicate_indices].tolist(), 'ok_iqr': ok_iqr[duplicate_indices].tolist(),
-          'median': median, 'mad': mad, 'q1': q1, 'q3': q3, 'mad_coef': mad_coef, 'iqr_coef': iqr_coef}
+          'median': median, 'mad': mad, 'q1': q1, 'q3': q3, 'mad_coef': mad_coef, 'iqr_coef': iqr_coef,
+          'mad_limits':mad_limits, 'iqr_limits': iqr_limits}
     if return_values:
         qc['values'] = values[duplicate_indices].tolist()
     return qc
