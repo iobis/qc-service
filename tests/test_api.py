@@ -66,17 +66,18 @@ def test_api_species_get_works():
 
 
 @vcr.use_cassette('tests/vcr_cassettes/api_taxon_get_few_points.yaml')
-def test_api_species_get_few_points():
-    """ api species - get few points """
+def test_api_taxon_get_few_points():
+    """ api taxon - get few points """
     qs = 'x=1&y=2'
     result = client.simulate_get('/outlierstaxon', query_string=qs)
     _check_outlierstaxon_result(result)
 
 
 @vcr.use_cassette('tests/vcr_cassettes/api_taxon_post_works.yaml')
-def test_api_species_post_works():
-    """ api species - post works """
-    points = t.rand_xy_list(150)
+def test_api_taxon_post_works():
+    """ api taxon - post works """
+    points, _ = t.rand_xy_list(150)
+    points = points.tolist()
     body = json.dumps({'points': points})
     result1 = client.simulate_post('/outlierstaxon', body=body)
     _check_outlierstaxon_result(result1)

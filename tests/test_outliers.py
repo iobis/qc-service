@@ -39,7 +39,7 @@ def test_spatial():
 def test_spatial_few_points():
     """ outliers - spatial few points """
     points, duplicate_indices = [[1,2]], [0]
-    qc = outliers.spatial(points, None, None)
+    qc = outliers.spatial(points, duplicate_indices, None, None)
     assert len(qc['ok_mad']) == len(points) and np.all(qc['ok_mad'])
     assert len(qc['ok_iqr']) == len(points) and np.all(qc['ok_iqr'])
     print(qc)
@@ -92,8 +92,8 @@ def test_environmental_few_points():
         for k in ['mad', 'q1', 'q3']:
             assert g[k] is None
 
-    xy = t.rand_xy_list(10, -1, 1, -1, 1)
-    qc = outliers.environmental(xy, mad_coef=1, iqr_coef=0.1)
+    xy, duplicate_indices = t.rand_xy_list(10, -1, 1, -1, 1)
+    qc = outliers.environmental(xy, duplicate_indices, mad_coef=1, iqr_coef=0.1)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
         assert len(g['ok_mad']) == len(xy) and 0 < np.sum(g['ok_mad']) < len(xy)
@@ -119,7 +119,7 @@ def test_spatial_qcstats():
     """outliers - spatial qc stats"""
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
     points, duplicate_indices = t.rand_xy_list(150)
-    qc = outliers.spatial(points, None, None, qcstats=qcstats)
+    qc = outliers.spatial(points, duplicate_indices, None, None, qcstats=qcstats)
     assert len(qc['ok_mad']) == len(points) and 0 < np.sum(qc['ok_mad']) < len(points)
     assert len(qc['ok_iqr']) == len(points) and 0 < np.sum(qc['ok_iqr']) < len(points)
     for i, k in enumerate(['median', 'mad', 'q1', 'q3']):
