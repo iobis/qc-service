@@ -7,7 +7,7 @@ import service.app as app
 import tests as t
 
 client = testing.TestClient(app.create())
-endpoints = ['/outliersspecies', '/outliersdataset']
+endpoints = ['/outlierstaxon', '/outliersdataset']
 
 
 def test_api_missing_xy_get():
@@ -34,7 +34,7 @@ def test_api_empty_list_post():
         assert 'Invalid ' in result.json["title"]
 
 
-def _check_outliersspecies_result(result, content=None, return_values=False):
+def _check_outlierstaxon_result(result, content=None, return_values=False):
     if content: print(content)
     else: print(result.json)
     assert result.status_code == 200
@@ -52,48 +52,48 @@ def _check_outliersspecies_result(result, content=None, return_values=False):
             assert 'values' in content[k]
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_species_get_works.yaml')
+@vcr.use_cassette('tests/vcr_cassettes/api_taxon_get_works.yaml')
 def test_api_species_get_works():
     """ api species - get works """
     x, y = t.rand_xy_tuple(150)
     qs = 'x={0}&y={1}'.format(','.join(map(str, x)), ','.join(map(str, y)))
-    result = client.simulate_get('/outliersspecies', query_string=qs)
-    _check_outliersspecies_result(result)
+    result = client.simulate_get('/outlierstaxon', query_string=qs)
+    _check_outlierstaxon_result(result)
     for return_values in [True, False]:
         qs = 'x={0}&y={1}&returnvalues={2}'.format(','.join(map(str, x)), ','.join(map(str, y)), return_values)
-        result = client.simulate_get('/outliersspecies', query_string=qs)
-        _check_outliersspecies_result(result)
+        result = client.simulate_get('/outlierstaxon', query_string=qs)
+        _check_outlierstaxon_result(result)
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_species_get_few_points.yaml')
+@vcr.use_cassette('tests/vcr_cassettes/api_taxon_get_few_points.yaml')
 def test_api_species_get_few_points():
     """ api species - get few points """
     qs = 'x=1&y=2'
-    result = client.simulate_get('/outliersspecies', query_string=qs)
-    _check_outliersspecies_result(result)
+    result = client.simulate_get('/outlierstaxon', query_string=qs)
+    _check_outlierstaxon_result(result)
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_species_post_works.yaml')
+@vcr.use_cassette('tests/vcr_cassettes/api_taxon_post_works.yaml')
 def test_api_species_post_works():
     """ api species - post works """
     points = t.rand_xy_list(150)
     body = json.dumps({'points': points})
-    result1 = client.simulate_post('/outliersspecies', body=body)
-    _check_outliersspecies_result(result1)
+    result1 = client.simulate_post('/outlierstaxon', body=body)
+    _check_outlierstaxon_result(result1)
     body = msgpack.dumps({'points': points})
-    result2 = client.simulate_post('/outliersspecies', body=body, headers={'Content-Type': falcon.MEDIA_MSGPACK})
+    result2 = client.simulate_post('/outlierstaxon', body=body, headers={'Content-Type': falcon.MEDIA_MSGPACK})
     content = msgpack.loads(result2.content)
-    _check_outliersspecies_result(result2, content)
+    _check_outlierstaxon_result(result2, content)
     assert result1.json == content
 
     for return_values in [True, False]:
         body = json.dumps({'points': points, 'returnvalues': return_values})
-        result1 = client.simulate_post('/outliersspecies', body=body)
-        _check_outliersspecies_result(result1, return_values=return_values)
+        result1 = client.simulate_post('/outlierstaxon', body=body)
+        _check_outlierstaxon_result(result1, return_values=return_values)
         body = msgpack.dumps({'points': points, 'returnvalues': return_values})
-        result2 = client.simulate_post('/outliersspecies', body=body, headers={'Content-Type': falcon.MEDIA_MSGPACK})
+        result2 = client.simulate_post('/outlierstaxon', body=body, headers={'Content-Type': falcon.MEDIA_MSGPACK})
         content = msgpack.loads(result2.content)
-        _check_outliersspecies_result(result2, content, return_values=return_values)
+        _check_outlierstaxon_result(result2, content, return_values=return_values)
 
 
 def _check_outliersdataset_result(result, content=None, return_values=False):

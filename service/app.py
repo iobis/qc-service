@@ -103,7 +103,7 @@ class QcResource(object):
                 raise falcon.HTTPError(falcon.HTTP_400, 'Error creating JSON response', str(ex))
 
 
-class QcSpeciesResource(QcResource):
+class QcTaxonResource(QcResource):
     @staticmethod
     def _qc_species(req):
         points, aphiaid, mad_coef, iqr_coef, return_values = QcResource._parse_request(req)
@@ -111,8 +111,15 @@ class QcSpeciesResource(QcResource):
             qcstats = None
             if aphiaid is not None:
                 qcstats = taxoninfo.qc_stats(aphiaid)
-            qc = outliers.environmental(points, mad_coef, iqr_coef, qcstats, return_values)
-            qc['spatial'] = outliers.spatial(points, mad_coef, iqr_coef, qcstats, return_values)
+            points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
+            qc = outliers.environmental(points, duplicate_indices, mad_coef, iqr_coef, qcstats, return_values)
+            qc['spatial'] = outliers.spatial(points, duplicate_indices, mad_coef, iqr_coef, qcstats, return_values)
+            if qcstats is not None:
+                qc['count'] = qcstats['count']
+                qc['id'] = qcstats['id']
+            else:
+                qc['count'] = len(points)
+                qc['id'] = None
             return qc
         except Exception as ex:
                 raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
@@ -131,7 +138,9 @@ class QcDatasetResource(QcResource):
     def _qc_dataset(req):
         points, _, mad_coef, iqr_coef, return_values = QcResource._parse_request(req)
         try:
-            return {'spatial': outliers.spatial(points, mad_coef, iqr_coef, return_values=return_values)}
+            points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
+            return {'spatial': outliers.spatial(points, duplicate_indices, mad_coef, iqr_coef, return_values=return_values),
+                    'count': len(points)}
         except Exception as ex:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
 
@@ -146,7 +155,7 @@ class QcDatasetResource(QcResource):
 
 def create():
     api = falcon.API()
-    api.add_route('/outliersspecies', QcSpeciesResource())
+    api.add_route('/outlierstaxon', QcTaxonResource())
     api.add_route('/outliersdataset', QcDatasetResource())
     return api
 

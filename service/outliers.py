@@ -20,8 +20,7 @@ def _values_qc(values, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indice
     return qc
 
 
-def environmental(points, mad_coef, iqr_coef, qcstats=None, return_values=False):
-    points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
+def environmental(points, duplicate_indices, mad_coef, iqr_coef, qcstats=None, return_values=False):
     if mad_coef is None:
         mad_coef = MAD_COEF
     if iqr_coef is None:
@@ -36,12 +35,10 @@ def environmental(points, mad_coef, iqr_coef, qcstats=None, return_values=False)
             median, mad, q1, q3 = qcstats[grid]
 
         qc[grid] = _values_qc(values, median, mad, q1, q3, mad_coef, iqr_coef, duplicate_indices, return_values)
-
     return qc
 
 
-def spatial(points, mad_coef, iqr_coef, qcstats=None, return_values=False):
-    points, duplicate_indices = np.unique(points, return_inverse=True, axis=0)
+def spatial(points, duplicate_indices , mad_coef, iqr_coef, qcstats=None, return_values=False):
     if mad_coef is None:
         mad_coef = MAD_COEF
     if iqr_coef is None:
