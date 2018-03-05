@@ -1,5 +1,5 @@
 import vcr
-import json
+import simplejson as json
 import umsgpack as msgpack
 import falcon
 from falcon import testing
@@ -79,7 +79,7 @@ def test_api_taxon_post_works():
     """ api taxon - post works """
     points, _ = t.rand_xy_list(150)
     points = points.tolist()
-    body = json.dumps({'points': points})
+    body = json.dumps({'points': points}, ignore_nan=True)
     result1 = client.simulate_post('/outlierstaxon', body=body)
     _check_outlierstaxon_result(result1)
     body = msgpack.dumps({'points': points})
@@ -89,7 +89,7 @@ def test_api_taxon_post_works():
     assert result1.json == content
 
     for return_values in [True, False]:
-        body = json.dumps({'points': points, 'returnvalues': return_values})
+        body = json.dumps({'points': points, 'returnvalues': return_values}, ignore_nan=True)
         result1 = client.simulate_post('/outlierstaxon', body=body)
         _check_outlierstaxon_result(result1, return_values=return_values)
         body = msgpack.dumps({'points': points, 'returnvalues': return_values})
@@ -127,7 +127,7 @@ def test_api_dataset_post_works():
     """ api dataset - post works """
     points, _ = t.rand_xy_list(150)
     points = points.tolist()
-    body = json.dumps({'points': points})
+    body = json.dumps({'points': points}, ignore_nan=True)
     result1 = client.simulate_post('/outliersdataset', body=body)
     _check_outliersdataset_result(result1)
     body = msgpack.dumps({'points': points})

@@ -104,7 +104,7 @@ class QcResource(object):
                 raise falcon.HTTPError(falcon.HTTP_400, 'Error creating msgpack response', str(ex))
         else:
             try:
-                resp.body = json.dumps(results)
+                resp.body = json.dumps(results, ignore_nan=True)
             except Exception as ex:
                 raise falcon.HTTPError(falcon.HTTP_400, 'Error creating JSON response', str(ex))
 
