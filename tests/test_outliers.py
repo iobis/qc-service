@@ -118,7 +118,6 @@ def test_environmental_few_points():
 def test_environmental_no_valid_points():
     """outliers environmental - no valid salinity"""
     qc = outliers.environmental([[15, 2]], [0], mad_coef=6, iqr_coef=3)
-    assert qc['count'] == 1
     for grid in ['sssalinity', 'sstemperature']:
         g = qc[grid]
         assert g['median'] is None
