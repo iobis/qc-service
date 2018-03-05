@@ -32,7 +32,7 @@ def environmental(points, duplicate_indices, mad_coef, iqr_coef, qcstats=None, r
     env = xy.lookup(points, shoredistance=False, grids=True, areas=False, asdataframe=True)
     qc = {}
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
-        values = env[grid]
+        values = env.get(grid, np.full(len(points), np.nan))
         if qcstats is None:
             median, mad, q1, q3 = stats.get_values_stats(values)
         else:

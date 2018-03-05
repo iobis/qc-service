@@ -114,6 +114,16 @@ def test_environmental_few_points():
             assert isinstance(g[k], float) and g[k] != 0
 
 
+@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_no_valid_points.yaml')
+def test_environmental_no_valid_points():
+    """outliers environmental - no valid salinity"""
+    qc = outliers.environmental([[15, 2]], [0], mad_coef=6, iqr_coef=3)
+    assert qc['count'] == 1
+    for grid in ['sssalinity', 'sstemperature']:
+        g = qc[grid]
+        assert g['median'] is None
+
+
 @vcr.use_cassette('tests/vcr_cassettes/outliers_spatial_qcstats.yaml')
 def test_spatial_qcstats():
     """outliers - spatial qc stats"""
