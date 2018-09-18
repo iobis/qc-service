@@ -6,17 +6,7 @@ python:
   - "3.6"
 
 install:
-  - pip install 'requests>=2.7'
-  - pip install 'u-msgpack-python>=2.4.1'
-  - pip install 'numpy>=1.14.0'
-  - pip install pandas
-  - pip install coveralls
-  - pip install vcrpy
-  - pip install nose
-  - pip install falcon
-  - pip install simplejson
-  - pip install json-logging-py
-  - pip install gunicorn
+  - pip install --no-cache-dir -r requirements.txt
   - pip install git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup
 
 script:
