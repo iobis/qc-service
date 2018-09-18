@@ -61,7 +61,7 @@ Development environment installation
     pipenv install gunicorn
     pipenv install sphinx sphinx-autobuild sphinx_rtd_theme
     pipenv install git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup
-    # enter virtual evironment
+    # enter virtual environment
     pipenv shell
 
 Tests

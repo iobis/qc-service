@@ -128,7 +128,7 @@ class QcTaxonResource(QcResource):
                 qc['id'] = None
             return qc
         except Exception as ex:
-                raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
+            raise falcon.HTTPError(falcon.HTTP_400, 'Error looking up data for provided points', str(ex))
 
     def on_get(self, req, resp):
         results = self._qc_taxon(req)
