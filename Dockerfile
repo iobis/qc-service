@@ -8,11 +8,11 @@ RUN ln -s /usr/include/locale.h /usr/include/xlocale.h
 
 WORKDIR /usr/src/app
 
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
 COPY . .
 
-COPY requirements.txt ./
-
-RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup
 
 EXPOSE 8000
