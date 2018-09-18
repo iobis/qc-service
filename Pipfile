@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 requests = "*"
-vcrpy = "*"
 pandas = "*"
 coveralls = "*"
 u-msgpack-python = "*"

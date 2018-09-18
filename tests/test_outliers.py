@@ -1,5 +1,4 @@
 import random
-import vcr
 import numpy as np
 from service import outliers
 from service import taxoninfo
@@ -51,7 +50,6 @@ def test_spatial_few_points():
         assert qc[k] is None
 
 
-@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental.yaml')
 def test_environmental():
     """outliers - environmental"""
     points, duplicate_indices = t.rand_xy_list(150)
@@ -64,7 +62,6 @@ def test_environmental():
             assert isinstance(g[k], float) and g[k] != 0
 
 
-@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_return_values.yaml')
 def test_environmental():
     """outliers - environmental return values"""
     points, duplicate_indices = t.rand_xy_list(150)
@@ -78,7 +75,6 @@ def test_environmental():
             assert isinstance(g[k], float) and g[k] != 0
 
 
-@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_few_points.yaml')
 def test_environmental_few_points():
     """outliers - environmental few points"""
 
@@ -114,7 +110,6 @@ def test_environmental_few_points():
             assert isinstance(g[k], float) and g[k] != 0
 
 
-@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_no_valid_points.yaml')
 def test_environmental_no_valid_points():
     """outliers environmental - no valid salinity"""
     qc = outliers.environmental([[15, 2]], [0], mad_coef=6, iqr_coef=3)
@@ -123,7 +118,6 @@ def test_environmental_no_valid_points():
         assert g['median'] is None
 
 
-@vcr.use_cassette('tests/vcr_cassettes/outliers_spatial_qcstats.yaml')
 def test_spatial_qcstats():
     """outliers - spatial qc stats"""
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
@@ -135,7 +129,6 @@ def test_spatial_qcstats():
         assert isinstance(qc[k], float) and qc[k] == qcstats['spatial'][i+1]
 
 
-@vcr.use_cassette('tests/vcr_cassettes/outliers_environmental_qcstats.yaml')
 def test_environmental_qcstats():
     """outliers - environmental qc stats"""
     qcstats = taxoninfo.qc_stats(aphiaid=141433)

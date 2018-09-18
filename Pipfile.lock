@@ -352,14 +352,6 @@
             ],
             "version": "==1.23"
         },
-        "vcrpy": {
-            "hashes": [
-                "sha256:7031f9c78a70b9586d2db4a2ec135c4e04194cabff58695ef0cc95e7cd66bc01",
-                "sha256:dadb4b2798a44bdce5301ec01380351ab798a468fc7ee5a34271bdd8527d8f99"
-            ],
-            "index": "pypi",
-            "version": "==1.13.0"
-        },
         "virtualenv": {
             "hashes": [
                 "sha256:2ce32cd126117ce2c539f0134eb89de91a8413a29baac49cbab3eb50e2026669",

@@ -1,4 +1,3 @@
-import vcr
 import simplejson as json
 import umsgpack as msgpack
 import falcon
@@ -53,7 +52,6 @@ def _check_outlierstaxon_result(result, content=None, return_values=False):
     return content
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_taxon_get_works.yaml')
 def test_api_taxon_get_works():
     """ api taxon - get works """
     x, y = t.rand_xy_tuple(150)
@@ -66,7 +64,6 @@ def test_api_taxon_get_works():
         _check_outlierstaxon_result(result)
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_taxon_get_few_points.yaml')
 def test_api_taxon_get_few_points():
     """ api taxon - get few points """
     qs = 'x=1&y=2'
@@ -74,7 +71,6 @@ def test_api_taxon_get_few_points():
     _check_outlierstaxon_result(result)
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_taxon_post_works.yaml')
 def test_api_taxon_post_works():
     """ api taxon - post works """
     points, _ = t.rand_xy_list(150)
@@ -109,7 +105,6 @@ def _check_outliersdataset_result(result, content=None, return_values=False):
         assert 'values' in content['spatial']
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_dataset_get_works.yaml')
 def test_api_dataset_get_works():
     """ api dataset - get works """
     x, y = t.rand_xy_tuple(150)
@@ -122,7 +117,6 @@ def test_api_dataset_get_works():
         _check_outliersdataset_result(result, return_values=return_values)
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_dataset_post_works.yaml')
 def test_api_dataset_post_works():
     """ api dataset - post works """
     points, _ = t.rand_xy_list(150)
@@ -137,7 +131,6 @@ def test_api_dataset_post_works():
     assert result1.json == content
 
 
-@vcr.use_cassette('tests/vcr_cassettes/api_taxon_aphiaid_works.yaml')
 def test_api_taxon_aphiaid_works():
     qs = 'x=1&y=2&aphiaid=144132'
     result = client.simulate_get('/outlierstaxon', query_string=qs)

@@ -52,7 +52,6 @@ Development environment installation
 .. code-block:: shell
 
     pipenv --three
-    pipenv install vcrpy
     pipenv install tox
     pipenv install nose
     pipenv install requests
