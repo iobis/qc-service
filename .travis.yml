@@ -7,7 +7,7 @@ python:
 
 install:
   - pip install --no-cache-dir -r requirements.txt
-  - pip install git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup
+  - pip install --no-cache-dir git+https://github.com/iobis/pyxylookup.git#egg=pyxylookup
 
 script:
   - nosetests -v --with-coverage --cover-package=service
