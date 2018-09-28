@@ -13,8 +13,7 @@ def qc_stats(aphiaid):
     aphiaid = int(aphiaid)
 
     if aphiaid is not None:
-        #r = requests.get('http://api.iobis.org/v3/statistics/outliers?taxonid=' + str(aphiaid))
-        r = requests.get('http://localhost:5003/statistics/outliers?taxonid=' + str(aphiaid))
+        r = requests.get('http://api.iobis.org/v3/statistics/outliers?taxonid=' + str(aphiaid))
         if r.status_code == 200:
             stats = json.loads(r.content)
             qcstats = {'id': aphiaid, 'count': stats['count'],
