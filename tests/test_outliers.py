@@ -121,7 +121,7 @@ def test_environmental_no_valid_points():
 def test_spatial_qcstats():
     """outliers - spatial qc stats"""
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
-    points, duplicate_indices = t.rand_xy_list(150)
+    points, duplicate_indices = t.rand_xy_list(200)
     qc = outliers.spatial(points, duplicate_indices, None, None, qcstats=qcstats)
     assert len(qc['ok_mad']) == len(points) and 0 < np.sum(qc['ok_mad']) < len(points)
     assert len(qc['ok_iqr']) == len(points) and 0 < np.sum(qc['ok_iqr']) < len(points)
@@ -132,7 +132,7 @@ def test_spatial_qcstats():
 def test_environmental_qcstats():
     """outliers - environmental qc stats"""
     qcstats = taxoninfo.qc_stats(aphiaid=141433)
-    points, duplicate_indices = t.rand_xy_list(150)
+    points, duplicate_indices = t.rand_xy_list(200)
     qc = outliers.environmental(points, duplicate_indices, 12, 6, qcstats=qcstats)
     for grid in ['bathymetry', 'sssalinity', 'sstemperature']:
         g = qc[grid]
