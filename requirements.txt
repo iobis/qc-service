@@ -25,7 +25,7 @@ six==1.11.0
 toml==0.9.6
 tox==3.3.0
 u-msgpack-python==2.5.0
-urllib3==1.23
+urllib3==1.26.5
 virtualenv==16.0.0
 wrapt==1.10.11
 yarl==1.2.6; python_version >= '3.4'
