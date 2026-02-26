@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: If you use this work, please cite it as below.
+title: QC Service
+type: software
+abstract: Web service for additional QC of data for OBIS
+url: https://github.com/iobis/qc-service
+license: MIT
+authors:
+  - given-names: Samuel
+    family-names: Bosch
+  - name: Intergovernmental Oceanographic Commission of UNESCO
+    alias: IOC-UNESCO
+    website: "https://obis.org"
+date-released: 2018-09-28
